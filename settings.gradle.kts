@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "APKChecker"
-include(":приложение")
+include(":app")
