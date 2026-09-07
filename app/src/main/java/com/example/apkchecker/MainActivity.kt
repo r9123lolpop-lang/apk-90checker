@@ -61,6 +61,7 @@ class MainViewModel : ViewModel() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App(vm: MainViewModel = viewModel()) {
     val context = androidx.compose.ui.platform.LocalContext.current
