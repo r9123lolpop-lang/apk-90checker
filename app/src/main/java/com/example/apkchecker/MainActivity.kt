@@ -3,7 +3,6 @@ package com.example.apkchecker
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
@@ -33,20 +32,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (!Settings.isExternalStorageManager()) {
-                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
-                    data = Uri.parse("package:$packageName")
-                }
-                try {
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    val intentAll = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
-                    startActivity(intentAll)
-                }
+        try {
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                data = Uri.parse("package:$packageName")
             }
-        } else if (Build.VERSION.SDK_INT <= 32) {
-            permission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            startActivity(intent)
+        } catch (_: Exception) {
+            try {
+                val intentAll = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivity(intentAll)
+            } catch (_: Exception) {
+                permission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         }
         
         setContent { App() }
